@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MapController" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GMO-Lg-oHT">
+                                <rect key="frame" x="20" y="40" width="560" height="260"/>
+                            </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7iB-If-GfT" customClass="CircleView" customModule="MapController" customModuleProvider="target">
+                                <rect key="frame" x="200" y="330" width="200" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="M7q-p8-zQA"/>
+                                    <constraint firstAttribute="height" constant="200" id="mF2-HY-vHe"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="counter">
+                                        <integer key="value" value="0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UcF-6L-a22" customClass="AnalogStick" customModule="MapController" customModuleProvider="target">
+                                <rect key="frame" x="270" y="400" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="F5B-hD-vbb"/>
+                                    <constraint firstAttribute="width" constant="60" id="go1-1z-u1O"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAddButton" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UcF-6L-a22" firstAttribute="top" secondItem="GMO-Lg-oHT" secondAttribute="bottom" constant="100" id="16e-9G-oJO"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="GMO-Lg-oHT" secondAttribute="leading" id="4FZ-Yd-4AQ"/>
+                            <constraint firstItem="GMO-Lg-oHT" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="BP4-GS-xYX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GMO-Lg-oHT" secondAttribute="trailing" id="NMo-8f-vc5"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GMO-Lg-oHT" secondAttribute="bottom" constant="300" id="OOx-2c-7Az"/>
+                            <constraint firstItem="7iB-If-GfT" firstAttribute="centerY" secondItem="UcF-6L-a22" secondAttribute="centerY" id="alW-Di-jOC"/>
+                            <constraint firstItem="GMO-Lg-oHT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hb4-29-YTE"/>
+                            <constraint firstItem="UcF-6L-a22" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="w5e-eb-scN"/>
+                            <constraint firstItem="7iB-If-GfT" firstAttribute="centerX" secondItem="UcF-6L-a22" secondAttribute="centerX" id="xG8-Ch-ZOy"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnAnalog" destination="UcF-6L-a22" id="AKZ-UP-GAp"/>
+                        <outlet property="mainMap" destination="GMO-Lg-oHT" id="tA6-cI-ndj"/>
+                        <outlet property="viewCircle" destination="7iB-If-GfT" id="XbI-47-wbw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="340" y="354"/>
+        </scene>
+    </scenes>
+</document>
