@@ -13,9 +13,6 @@ let π: CGFloat = CGFloat(M_PI)
 @IBDesignable
 class CircleView: UIView {
     @IBInspectable var fillColor: UIColor = UIColor.darkGrayColor()
-    @IBInspectable var counter: Int = 5
-    @IBInspectable var outlineColor: UIColor = UIColor.blueColor()
-    @IBInspectable var counterColor: UIColor = UIColor.orangeColor()
  
     override func drawRect(rect: CGRect) {
         let center = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
