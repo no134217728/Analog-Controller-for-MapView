@@ -21,12 +21,12 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GMO-Lg-oHT">
                                 <rect key="frame" x="20" y="40" width="560" height="260"/>
                             </mapView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7iB-If-GfT" customClass="CircleView" customModule="MapController" customModuleProvider="target">
-                                <rect key="frame" x="200" y="330" width="200" height="200"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7iB-If-GfT" userLabel="LeftCircleView" customClass="CircleView" customModule="MapController" customModuleProvider="target">
+                                <rect key="frame" x="20" y="340" width="150" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="M7q-p8-zQA"/>
-                                    <constraint firstAttribute="height" constant="200" id="mF2-HY-vHe"/>
+                                    <constraint firstAttribute="width" constant="150" id="M7q-p8-zQA"/>
+                                    <constraint firstAttribute="height" constant="150" id="mF2-HY-vHe"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
@@ -34,8 +34,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UcF-6L-a22" customClass="AnalogStick" customModule="MapController" customModuleProvider="target">
-                                <rect key="frame" x="270" y="400" width="60" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UcF-6L-a22" userLabel="LeftAnalogBtn" customClass="AnalogStick" customModule="MapController" customModuleProvider="target">
+                                <rect key="frame" x="65" y="385" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="F5B-hD-vbb"/>
                                     <constraint firstAttribute="width" constant="60" id="go1-1z-u1O"/>
@@ -47,24 +47,81 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isAddButton" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="164-Gv-Mq5" userLabel="RightCircleView" customClass="CircleView" customModule="MapController" customModuleProvider="target">
+                                <rect key="frame" x="430" y="340" width="150" height="150"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="d7U-pS-1MN"/>
+                                    <constraint firstAttribute="height" constant="150" id="lhO-kz-T5H"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGx-A1-Rv2" userLabel="RightAnalogBtn" customClass="AnalogStick" customModule="MapController" customModuleProvider="target">
+                                <rect key="frame" x="475" y="385" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="Y5I-S9-x4S"/>
+                                    <constraint firstAttribute="width" constant="60" id="pyB-Vm-EbV"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAddButton" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YGL-uU-ue4">
+                                <rect key="frame" x="150.5" y="520" width="300" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="nU6-OA-ukc"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Span"/>
+                                    <segment title="ZoomLevel"/>
+                                    <segment title="Distance"/>
+                                </segments>
+                                <connections>
+                                    <action selector="selectMethod:" destination="BYZ-38-t0r" eventType="valueChanged" id="4WV-8t-qtq"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="164-Gv-Mq5" firstAttribute="top" secondItem="7iB-If-GfT" secondAttribute="top" id="0mR-X4-Qsg"/>
                             <constraint firstItem="UcF-6L-a22" firstAttribute="top" secondItem="GMO-Lg-oHT" secondAttribute="bottom" constant="100" id="16e-9G-oJO"/>
                             <constraint firstAttribute="leadingMargin" secondItem="GMO-Lg-oHT" secondAttribute="leading" id="4FZ-Yd-4AQ"/>
                             <constraint firstItem="GMO-Lg-oHT" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="BP4-GS-xYX"/>
+                            <constraint firstItem="vGx-A1-Rv2" firstAttribute="centerX" secondItem="164-Gv-Mq5" secondAttribute="centerX" id="Cuz-1u-WxE"/>
+                            <constraint firstItem="7iB-If-GfT" firstAttribute="top" secondItem="GMO-Lg-oHT" secondAttribute="bottom" constant="40" id="Hkr-7c-CXD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GMO-Lg-oHT" secondAttribute="trailing" id="NMo-8f-vc5"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GMO-Lg-oHT" secondAttribute="bottom" constant="300" id="OOx-2c-7Az"/>
+                            <constraint firstItem="7iB-If-GfT" firstAttribute="leading" secondItem="GMO-Lg-oHT" secondAttribute="leading" id="Ora-X9-zwc"/>
                             <constraint firstItem="7iB-If-GfT" firstAttribute="centerY" secondItem="UcF-6L-a22" secondAttribute="centerY" id="alW-Di-jOC"/>
+                            <constraint firstItem="YGL-uU-ue4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dgI-j1-EWQ"/>
                             <constraint firstItem="GMO-Lg-oHT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hb4-29-YTE"/>
+                            <constraint firstItem="vGx-A1-Rv2" firstAttribute="centerY" secondItem="164-Gv-Mq5" secondAttribute="centerY" id="pyW-2M-aNj"/>
                             <constraint firstItem="UcF-6L-a22" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="w5e-eb-scN"/>
+                            <constraint firstItem="YGL-uU-ue4" firstAttribute="top" secondItem="164-Gv-Mq5" secondAttribute="bottom" constant="30" id="wav-CR-Wio"/>
                             <constraint firstItem="7iB-If-GfT" firstAttribute="centerX" secondItem="UcF-6L-a22" secondAttribute="centerX" id="xG8-Ch-ZOy"/>
+                            <constraint firstItem="164-Gv-Mq5" firstAttribute="trailing" secondItem="GMO-Lg-oHT" secondAttribute="trailing" id="xUA-yg-AdQ"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="16e-9G-oJO"/>
+                                <exclude reference="w5e-eb-scN"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
-                        <outlet property="btnAnalog" destination="UcF-6L-a22" id="AKZ-UP-GAp"/>
+                        <outlet property="leftAnalogBtn" destination="UcF-6L-a22" id="as7-Cy-Dyq"/>
+                        <outlet property="leftCircleView" destination="7iB-If-GfT" id="rs4-IJ-vMS"/>
                         <outlet property="mainMap" destination="GMO-Lg-oHT" id="tA6-cI-ndj"/>
-                        <outlet property="viewCircle" destination="7iB-If-GfT" id="XbI-47-wbw"/>
+                        <outlet property="rightAnalogBtn" destination="vGx-A1-Rv2" id="G5F-Yk-FRo"/>
+                        <outlet property="rightCircleView" destination="164-Gv-Mq5" id="A8V-eF-PAS"/>
+                        <outlet property="segMethodWahlen" destination="YGL-uU-ue4" id="GuT-fc-P3m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
