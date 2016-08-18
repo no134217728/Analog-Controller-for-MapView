@@ -4,9 +4,9 @@
 //
 //  Created by Gelbhaubenkakadu on 2016/8/10.
 //  Copyright © 2016年 Apacer. All rights reserved.
+// 
 // https://github.com/hehonghui/iOS-tech-frontier/blob/master/issue-5/Swift-Core-Graphics%E6%95%99%E7%A8%8B%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86.md
 // http://stackoverflow.com/questions/26530546/track-mkmapview-rotation
-
 // http://stackoverflow.com/questions/23122173/mapview-detect-scrolling http://stackoverflow.com/questions/24103691/how-to-set-up-game-loop-in-swift
 // https://developers.google.com/maps/documentation/ios-sdk/intro
 // http://stackoverflow.com/questions/4189621/setting-the-zoom-level-for-a-mkmapview
@@ -212,10 +212,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             case 0: // 直接 Span 算法，難以掌握易錯亂
                 currentSpan.latitudeDelta = max(0.0001, min(currentSpan.latitudeDelta + (0.1 * Double(accelerateSpan) + 0), 180))
                 currentSpan.longitudeDelta = max(0.0001, min(currentSpan.longitudeDelta + (0.1 * Double(accelerateSpan) + 0), 180))
+                
                 let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: currentSpan.latitudeDelta, longitudeDelta: currentSpan.longitudeDelta)
                 mainMap.setRegion(MKCoordinateRegion(center: currentLocation, span: span), animated: false)
             case 1: // zoomLevel 算法，本質還是基於 Span 算法
                 currentZoomLevel = max(0.6, min(currentZoomLevel + (0.1 * Double(accelerateSpan)), 20))
+                
                 self.setCenterCoordinate(currentLocation, setZoomLevel: currentZoomLevel)
             case 2: // 寬度算法
                 currentViewDistance = max(90, min(currentViewDistance * (1 + 0.1 * Double(accelerateSpan)), 18000000))
