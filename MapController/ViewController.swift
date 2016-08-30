@@ -215,18 +215,26 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 
                 let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: currentSpan.latitudeDelta, longitudeDelta: currentSpan.longitudeDelta)
                 mainMap.setRegion(MKCoordinateRegion(center: currentLocation, span: span), animated: false)
+                
+                print("currentSpan: \(currentSpan)")
             case 1: // zoomLevel 算法，本質還是基於 Span 算法
-                currentZoomLevel = max(0.6, min(currentZoomLevel + (0.1 * Double(accelerateSpan)), 20))
+                currentZoomLevel = max(0.6, min(currentZoomLevel - (0.1 * Double(accelerateSpan)), 20))
                 
                 self.setCenterCoordinate(currentLocation, setZoomLevel: currentZoomLevel)
+                
+                print("currentZoomLevel: \(currentZoomLevel)")
             case 2: // 寬度算法
                 currentViewDistance = max(90, min(currentViewDistance * (1 + 0.1 * Double(accelerateSpan)), 18000000))
                 
                 let viewRegion = MKCoordinateRegionMakeWithDistance(currentLocation, currentViewDistance, currentViewDistance)
                 mainMap.setRegion(viewRegion, animated: false)
+                
+                print("currentViewDistance: \(currentViewDistance)")
             default:
                 break
             }
+            
+//            print("currentSpan: \(currentSpan), currentZoomLevel: \(currentZoomLevel), currentViewDistance: \(currentViewDistance)")
             
             // 地圖角度
             var accelerateHeading: CGFloat = 1 // 轉向變化加速度比例
