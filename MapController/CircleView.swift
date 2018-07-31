@@ -12,9 +12,9 @@ let π: CGFloat = CGFloat(M_PI)
 
 @IBDesignable
 class CircleView: UIView {
-    @IBInspectable var fillColor: UIColor = UIColor.darkGrayColor()
+    @IBInspectable var fillColor: UIColor = UIColor.darkGray
  
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let center = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
         let radius: CGFloat = max(bounds.width, bounds.height)
         let arcWidth: CGFloat = 3

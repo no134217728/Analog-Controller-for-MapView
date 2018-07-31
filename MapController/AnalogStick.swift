@@ -10,12 +10,12 @@ import UIKit
 
 @IBDesignable
 class AnalogStick: UIButton {
-    @IBInspectable var fillColor: UIColor = UIColor.lightGrayColor()
+    @IBInspectable var fillColor: UIColor = UIColor.lightGray
     @IBInspectable var isAddButton: Bool = true
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // 畫圈
-        let path = UIBezierPath(ovalInRect: rect)
+        let path = UIBezierPath(ovalIn: rect)
         fillColor.setFill()
         path.fill()
         
@@ -27,18 +27,18 @@ class AnalogStick: UIButton {
         
         plusPath.lineWidth = plusHeight
         
-        plusPath.moveToPoint(CGPoint(x: bounds.width / 2 - plusWidth / 2 + 0.5, y: bounds.height / 2 + 0.5))
-        plusPath.addLineToPoint(CGPoint(x: bounds.width / 2 + plusWidth / 2 + 0.5, y: bounds.height / 2 + 0.5))
+        plusPath.move(to: CGPoint(x: bounds.width / 2 - plusWidth / 2 + 0.5, y: bounds.height / 2 + 0.5))
+        plusPath.addLine(to: CGPoint(x: bounds.width / 2 + plusWidth / 2 + 0.5, y: bounds.height / 2 + 0.5))
         
         // 畫直
         if isAddButton {
             plusPath.lineWidth = plusHeight
             
-            plusPath.moveToPoint(CGPoint(x: bounds.width / 2 + 0.5, y: bounds.height / 2 - plusWidth / 2 + 0.5))
-            plusPath.addLineToPoint(CGPoint(x: bounds.width / 2 + 0.5, y: bounds.height / 2 + plusWidth / 2 + 0.5))
+            plusPath.move(to: CGPoint(x: bounds.width / 2 + 0.5, y: bounds.height / 2 - plusWidth / 2 + 0.5))
+            plusPath.addLine(to: CGPoint(x: bounds.width / 2 + 0.5, y: bounds.height / 2 + plusWidth / 2 + 0.5))
         }
         
-        UIColor.whiteColor().setStroke()
+        UIColor.white.setStroke()
         
         plusPath.stroke()
     }

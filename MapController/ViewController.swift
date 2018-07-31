@@ -23,8 +23,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet var mainMap: MKMapView!
     @IBOutlet var segMethodWahlen: UISegmentedControl!
     
-    var locationLeft:CGPoint = CGPointZero
-    var locationRight:CGPoint = CGPointZero
+    var locationLeft:CGPoint = CGPoint.zero
+    var locationRight:CGPoint = CGPoint.zero
     var maxDistance:CGFloat = 0
     var calculateMethod: NSInteger = 0
     
@@ -40,10 +40,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var isMove: Bool = false
     var isChangeView: Bool = false
     
-    var leftButtonCenter = CGPointZero
-    var rightButtonCenter = CGPointZero
+    var leftButtonCenter = CGPoint.zero
+    var rightButtonCenter = CGPoint.zero
     
-    @IBAction func selectMethod(sender: AnyObject) {
+    @IBAction func selectMethod(_ sender: AnyObject) {
         calculateMethod = segMethodWahlen.selectedSegmentIndex
         renewCurrentValue(mainMap)
     }
@@ -68,7 +68,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         calculateMethod = segMethodWahlen.selectedSegmentIndex
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let c = locations[0] as CLLocation
         let nowLoc = CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude)
         
@@ -80,13 +80,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mainMap.addAnnotation(annotation)
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if !isChangeView { // 由程式改變視角時，有些值會跑掉，所以用此法來避掉轉右香菇頭時重新寫入一些參數
             renewCurrentValue(mapView)
         }
     }
     
-    func renewCurrentValue(mapView: MKMapView) -> Void {
+    func renewCurrentValue(_ mapView: MKMapView) -> Void {
         let mRect: MKMapRect = mapView.visibleMapRect
         let eastMapPoint: MKMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect))
         let westMapPoint: MKMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect))
@@ -98,16 +98,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         currentZoomLevel = self.zoomLevel()
     }
 
-    func panLeftButton(pan: UIPanGestureRecognizer) {
-        locationLeft = pan.locationInView(view)
+    func panLeftButton(_ pan: UIPanGestureRecognizer) {
+        locationLeft = pan.location(in: view)
         maxDistance = max(leftCircleView.frame.size.width / 2, leftCircleView.frame.size.height / 2)
 
         switch pan.state {
-        case .Began:
+        case .began:
             isMove = true
             move()
             leftButtonCenter = leftAnalogBtn.center
-        case .Ended, .Failed, .Cancelled:
+        case .ended, .failed, .cancelled:
             isMove = false
             leftAnalogBtn.center = leftButtonCenter
             
@@ -129,16 +129,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-    func panRightButton(pan: UIPanGestureRecognizer) {
-        locationRight = pan.locationInView(view)
+    func panRightButton(_ pan: UIPanGestureRecognizer) {
+        locationRight = pan.location(in: view)
         maxDistance = max(rightCircleView.frame.size.width / 2, rightCircleView.frame.size.height / 2)
         
         switch pan.state {
-        case .Began:
+        case .began:
             isChangeView = true
             changeView()
             rightButtonCenter = rightAnalogBtn.center
-        case .Ended, .Failed, .Cancelled:
+        case .ended, .failed, .cancelled:
             isChangeView = false
             rightAnalogBtn.center = rightButtonCenter
         default:
@@ -197,7 +197,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             annotation.coordinate.latitude = max(-90, min(annotation.coordinate.latitude + (0.000005 * Double(accelerateLatY)), 90))
             // MARK: 多此行後，香菇頭就會一直跳回原位，無法理解
 //            annotation.title = "Lat: \(NSString(format: "%.5f", annotation.coordinate.latitude)), Lon: \(NSString(format: "%.5f", annotation.coordinate.longitude))"
-            self.performSelector(#selector(move), withObject: nil, afterDelay: 0.01)
+            self.perform(#selector(move), with: nil, afterDelay: 0.01)
         }
     }
     
@@ -249,12 +249,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
             mainMap.camera.heading = mapHeading
             
-            self.performSelector(#selector(changeView), withObject: nil, afterDelay: 0.01)
+            self.perform(#selector(changeView), with: nil, afterDelay: 0.01)
         }
     }
     
     // ZoomLevel 轉換
-    func setCenterCoordinate(centerCoordinate: CLLocationCoordinate2D, setZoomLevel zoomLevel:Double) -> Void {
+    func setCenterCoordinate(_ centerCoordinate: CLLocationCoordinate2D, setZoomLevel zoomLevel:Double) -> Void {
         let span: MKCoordinateSpan = MKCoordinateSpanMake(0, 360 / pow(2, Double(zoomLevel)) * Double(mainMap.frame.size.width) / 256) // zoomLevel 轉 Span
         mainMap.setRegion(MKCoordinateRegionMake(centerCoordinate, span), animated: false)
     }
@@ -263,7 +263,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return log2(360 * ((Double(mainMap.frame.size.width) / 256) / mainMap.region.span.longitudeDelta)) + 1
     }
     
-    func setZoomLevel(zoomLevel: Double) -> Void { // 設定位置與 zoomLevel
+    func setZoomLevel(_ zoomLevel: Double) -> Void { // 設定位置與 zoomLevel
         self.setCenterCoordinate(currentLocation, setZoomLevel: zoomLevel)
     }
     
