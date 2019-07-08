@@ -88,9 +88,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func renewCurrentValue(_ mapView: MKMapView) -> Void {
         let mRect: MKMapRect = mapView.visibleMapRect
-        let eastMapPoint: MKMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect))
-        let westMapPoint: MKMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect))
-        currentViewDistance = MKMetersBetweenMapPoints(eastMapPoint, westMapPoint)
+        let eastMapPoint: MKMapPoint = MKMapPoint(x: mRect.minX, y: mRect.midY)
+        let westMapPoint: MKMapPoint = MKMapPoint(x: mRect.maxX, y: mRect.midY)
+        currentViewDistance = eastMapPoint.distance(to: westMapPoint)
         
         mapHeading = mapView.camera.heading
         currentLocation = mapView.centerCoordinate
@@ -98,7 +98,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         currentZoomLevel = self.zoomLevel()
     }
 
-    func panLeftButton(_ pan: UIPanGestureRecognizer) {
+    @objc func panLeftButton(_ pan: UIPanGestureRecognizer) {
         locationLeft = pan.location(in: view)
         maxDistance = max(leftCircleView.frame.size.width / 2, leftCircleView.frame.size.height / 2)
 
@@ -129,7 +129,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-    func panRightButton(_ pan: UIPanGestureRecognizer) {
+    @objc func panRightButton(_ pan: UIPanGestureRecognizer) {
         locationRight = pan.location(in: view)
         maxDistance = max(rightCircleView.frame.size.width / 2, rightCircleView.frame.size.height / 2)
         
@@ -158,15 +158,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-    func move() {
+    @objc func move() {
         if isMove {
             var accelerateLonX: CGFloat = 1 // 經度加速度比例
             var accelerateLatY: CGFloat = 1 // 緯度加速度比例
             
             // 實際移動點
             // 計算加速度與方向（修正角度版）
-            let toRadian: Double = M_PI / 180 // 轉弧度
-            let toDegree: Double = 180 / M_PI // 轉角度
+            let toRadian: Double = Double.pi / 180 // 轉弧度
+            let toDegree: Double = 180 / Double.pi // 轉角度
             let distance: CGFloat = sqrt(pow(locationLeft.x - leftCircleView.center.x, 2) + pow(locationLeft.y - leftCircleView.center.y, 2))
             
             let deltaLonX: CGFloat = locationLeft.x - leftCircleView.center.x
@@ -201,7 +201,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-    func changeView() {
+    @objc func changeView() {
         if isChangeView {
             // 視線高度
             var accelerateSpan: CGFloat = 1 // 高度變化加速度比例
@@ -226,7 +226,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             case 2: // 寬度算法
                 currentViewDistance = max(90, min(currentViewDistance * (1 + 0.1 * Double(accelerateSpan)), 18000000))
                 
-                let viewRegion = MKCoordinateRegionMakeWithDistance(currentLocation, currentViewDistance, currentViewDistance)
+                let viewRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: currentViewDistance, longitudinalMeters: currentViewDistance)
                 mainMap.setRegion(viewRegion, animated: false)
                 
                 print("currentViewDistance: \(currentViewDistance)")
@@ -255,8 +255,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     // ZoomLevel 轉換
     func setCenterCoordinate(_ centerCoordinate: CLLocationCoordinate2D, setZoomLevel zoomLevel:Double) -> Void {
-        let span: MKCoordinateSpan = MKCoordinateSpanMake(0, 360 / pow(2, Double(zoomLevel)) * Double(mainMap.frame.size.width) / 256) // zoomLevel 轉 Span
-        mainMap.setRegion(MKCoordinateRegionMake(centerCoordinate, span), animated: false)
+        let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 360 / pow(2, Double(zoomLevel)) * Double(mainMap.frame.size.width) / 256) // zoomLevel 轉 Span
+        mainMap.setRegion(MKCoordinateRegion(center: centerCoordinate, span: span), animated: false)
     }
     
     func zoomLevel() -> Double { // Span 轉 zoomLevel
