@@ -14,8 +14,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
-
+class ViewController: UIViewController {
     @IBOutlet var leftCircleView: CircleView!
     @IBOutlet var leftAnalogBtn: AnalogStick!
     @IBOutlet var rightCircleView: CircleView!
@@ -50,7 +49,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         let panLeft = UIPanGestureRecognizer(target: self, action: #selector(panLeftButton(_:)))
         leftAnalogBtn.addGestureRecognizer(panLeft)
         let panRight = UIPanGestureRecognizer(target: self, action: #selector(panRightButton(_:)))
@@ -66,36 +64,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         currentLocationMgr.distanceFilter = CLLocationDistanceMax
         
         calculateMethod = segMethodWahlen.selectedSegmentIndex
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let c = locations[0] as CLLocation
-        let nowLoc = CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude)
-        
-        let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        mainMap.setRegion(MKCoordinateRegion(center: nowLoc, span: span), animated: true)
-        
-        annotation.coordinate = nowLoc
-        annotation.title = "Lat: \(NSString(format: "%.5f", nowLoc.latitude)), Lon: \(NSString(format: "%.5f", nowLoc.longitude))"
-        mainMap.addAnnotation(annotation)
-    }
-    
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        if !isChangeView { // 由程式改變視角時，有些值會跑掉，所以用此法來避掉轉右香菇頭時重新寫入一些參數
-            renewCurrentValue(mapView)
-        }
-    }
-    
-    func renewCurrentValue(_ mapView: MKMapView) -> Void {
-        let mRect: MKMapRect = mapView.visibleMapRect
-        let eastMapPoint: MKMapPoint = MKMapPoint(x: mRect.minX, y: mRect.midY)
-        let westMapPoint: MKMapPoint = MKMapPoint(x: mRect.maxX, y: mRect.midY)
-        currentViewDistance = eastMapPoint.distance(to: westMapPoint)
-        
-        mapHeading = mapView.camera.heading
-        currentLocation = mapView.centerCoordinate
-        currentSpan = mapView.region.span
-        currentZoomLevel = self.zoomLevel()
     }
 
     @objc func panLeftButton(_ pan: UIPanGestureRecognizer) {
@@ -253,22 +221,49 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
+    private func renewCurrentValue(_ mapView: MKMapView) -> Void {
+        let mRect: MKMapRect = mapView.visibleMapRect
+        let eastMapPoint: MKMapPoint = MKMapPoint(x: mRect.minX, y: mRect.midY)
+        let westMapPoint: MKMapPoint = MKMapPoint(x: mRect.maxX, y: mRect.midY)
+        currentViewDistance = eastMapPoint.distance(to: westMapPoint)
+        
+        mapHeading = mapView.camera.heading
+        currentLocation = mapView.centerCoordinate
+        currentSpan = mapView.region.span
+        currentZoomLevel = self.zoomLevel()
+    }
+    
     // ZoomLevel 轉換
-    func setCenterCoordinate(_ centerCoordinate: CLLocationCoordinate2D, setZoomLevel zoomLevel:Double) -> Void {
+    private func setCenterCoordinate(_ centerCoordinate: CLLocationCoordinate2D, setZoomLevel zoomLevel:Double) -> Void {
         let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 360 / pow(2, Double(zoomLevel)) * Double(mainMap.frame.size.width) / 256) // zoomLevel 轉 Span
         mainMap.setRegion(MKCoordinateRegion(center: centerCoordinate, span: span), animated: false)
     }
     
-    func zoomLevel() -> Double { // Span 轉 zoomLevel
+    private func zoomLevel() -> Double { // Span 轉 zoomLevel
         return log2(360 * ((Double(mainMap.frame.size.width) / 256) / mainMap.region.span.longitudeDelta)) + 1
     }
     
-    func setZoomLevel(_ zoomLevel: Double) -> Void { // 設定位置與 zoomLevel
+    private func setZoomLevel(_ zoomLevel: Double) -> Void { // 設定位置與 zoomLevel
         self.setCenterCoordinate(currentLocation, setZoomLevel: zoomLevel)
     }
+}
+
+extension ViewController: MKMapViewDelegate, CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let c = locations[0] as CLLocation
+        let nowLoc = CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude)
+        
+        let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        mainMap.setRegion(MKCoordinateRegion(center: nowLoc, span: span), animated: true)
+        
+        annotation.coordinate = nowLoc
+        annotation.title = "Lat: \(NSString(format: "%.5f", nowLoc.latitude)), Lon: \(NSString(format: "%.5f", nowLoc.longitude))"
+        mainMap.addAnnotation(annotation)
+    }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        if !isChangeView { // 由程式改變視角時，有些值會跑掉，所以用此法來避掉轉右香菇頭時重新寫入一些參數
+            renewCurrentValue(mapView)
+        }
     }
 }

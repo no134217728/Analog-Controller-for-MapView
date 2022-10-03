@@ -29,5 +29,4 @@ class CircleView: UIView {
         path.lineWidth = arcWidth
         path.stroke()
     }
-    
 }
